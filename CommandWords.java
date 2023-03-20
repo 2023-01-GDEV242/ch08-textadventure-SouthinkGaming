@@ -22,7 +22,7 @@ public class CommandWords {
     public CommandWords() {
         validCommands = new HashMap<>();
         for(CommandWord command : CommandWord.values()) {
-            if(command != CommandWord.UNKNOWN) {
+            if(command != CommandWord.LOOK) {
                 validCommands.put(command.toString(), command);
             }
         }
@@ -38,9 +38,8 @@ public class CommandWords {
         CommandWord command = validCommands.get(commandWord);
         if(command != null) {
             return command;
-        }
-        else {
-            return CommandWord.UNKNOWN;
+        } else {
+            return CommandWord.LOOK;
         }
     }
     

@@ -97,7 +97,7 @@ public class Game {
         CommandWord commandWord = command.getCommandWord();
 
         switch (commandWord) {
-            case UNKNOWN:
+            case LOOK:
                 System.out.println("I don't know what you mean...");
                 break;
 
