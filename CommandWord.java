@@ -8,7 +8,7 @@
 public enum CommandWord {
     // A value for each command word along with its
     // corresponding user interface string.
-    GO("go"), QUIT("quit"), HELP("help"), LOOK("look");
+    GO("go"), QUIT("quit"), HELP("help"), LOOK("look"), EAT("eat");
     
     // The command string.
     private String commandString;
@@ -26,5 +26,12 @@ public enum CommandWord {
      */
     public String toString() {
         return commandString;
+    }
+    
+    /**
+     * Prints all valid commands to System.out
+     */
+    public void showAll(){
+        System.out.println(commandString + " ");
     }
 }

@@ -18,7 +18,7 @@
 public class Game {
     private Parser parser;
     private Room currentRoom;
-        
+
     /**
      * Create the game and initialise its internal map.
      */
@@ -98,7 +98,7 @@ public class Game {
 
         switch (commandWord) {
             case LOOK:
-                System.out.println("I don't know what you mean...");
+                look();
                 break;
 
             case HELP:
@@ -112,11 +112,23 @@ public class Game {
             case QUIT:
                 wantToQuit = quit(command);
                 break;
+
+            case EAT:
+                eat();
+                break;
         }
         return wantToQuit;
     }
 
     // implementations of user commands:
+    
+    private void eat(){
+        System.out.println("You finished eating and you aren't hungary any more.");
+    }
+
+    private void look(){
+        System.out.println(currentRoom.getLongDescription());
+    }
 
     /**
      * Print out some help information.
