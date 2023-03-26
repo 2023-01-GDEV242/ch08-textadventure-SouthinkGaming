@@ -32,13 +32,24 @@ public class Game {
      */
     private void createRooms() {
         Room outside, theater, pub, lab, office;
-      
-        // create the rooms
-        outside = new Room("outside the main entrance of the university");
-        theater = new Room("in a lecture theater");
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        office = new Room("in the computing admin office");
+
+        // declare Item referance variables
+        Room.Item outside_Item, theater_Item, pub_Item, lab_Item, office_Item;
+        
+        // define each item object
+        outside_Item = new Room.Item("Bench: To sit, to relaz and wait for some one ", 0);
+        theater_Item = new Room.Item("Projector: To display presenations, videos, or lectures "
+        + 500);
+        pub_Item = new Room.Item("Beverages: Soft drinks to drink ", 100);
+        lab_Item = new Room.Item("Laptop: To access the files ", 800);
+        office_Item = new Room.Item("Key stand: Contains keys for other rooms ", 400);
+
+        // create the rooms by addint the corresponding Items to each room
+        outside = new Room("Outside the main entrance of the university" + outside_Item);
+        theater = new Room("In a lecture theater" + theater_Item);
+        pub = new Room("In the campus pub" + pub_Item);
+        lab = new Room("In a computing lab" + lab_Item);
+        office = new Room("In the computing admin office" + office_Item);
         
         // initialise room exits
         outside.setExit("east", theater);
@@ -121,7 +132,6 @@ public class Game {
     }
 
     // implementations of user commands:
-    
     private void eat(){
         System.out.println("You finished eating and you aren't hungary any more.");
     }
@@ -136,7 +146,7 @@ public class Game {
      * command words.
      */
     private void printHelp() {
-        System.out.println("You are lost. You are alone. You wander");
+        System.out.println("You are lost. You are alone. You wander.");
         System.out.println("around at the university.");
         System.out.println();
         System.out.println("Your command words are:");
@@ -176,9 +186,20 @@ public class Game {
         if(command.hasSecondWord()) {
             System.out.println("Quit what?");
             return false;
-        }
-        else {
+        } else {
             return true;  // signal that we want to quit
         }
+    }
+    
+    public String showCommands(Command commands){
+        return (commands.getCommandList());
+    }
+    
+    public String getCommandList(Command commands){
+        String returnString = "";
+        for(String command: commands){
+            returnString = returnString + command + " ";
+        }
+        return returnString;
     }
 }

@@ -50,9 +50,9 @@ public class Command {
     }
 
     /**
-     * @return true if this command was not understood.
+     * @return true if this command is look.
      */
-    public boolean isUnknown() {
+    public boolean LOOK() {
         return (commandWord == CommandWord.LOOK);
     }
 
