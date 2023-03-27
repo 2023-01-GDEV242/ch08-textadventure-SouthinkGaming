@@ -34,15 +34,14 @@ public class Game {
         Room outside, theater, pub, lab, office;
 
         // declare Item referance variables
-        Room.Item outside_Item, theater_Item, pub_Item, lab_Item, office_Item;
+        Item outside_Item, theater_Item, pub_Item, lab_Item, office_Item;
         
         // define each item object
-        outside_Item = new Room.Item("Bench: To sit, to relaz and wait for some one ", 0);
-        theater_Item = new Room.Item("Projector: To display presenations, videos, or lectures "
-        + 500);
-        pub_Item = new Room.Item("Beverages: Soft drinks to drink ", 100);
-        lab_Item = new Room.Item("Laptop: To access the files ", 800);
-        office_Item = new Room.Item("Key stand: Contains keys for other rooms ", 400);
+        outside_Item = new Item("Bench: To sit, to relaz and wait for some one ", 0);
+        theater_Item = new Item("Projector: To display presenations, videos, or lectures ", 500);
+        pub_Item = new Item("Beverages: Soft drinks to drink ", 100);
+        lab_Item = new Item("Laptop: To access the files ", 800);
+        office_Item = new Item("Key stand: Contains keys for other rooms ", 400);
 
         // create the rooms by addint the corresponding Items to each room
         outside = new Room("Outside the main entrance of the university" + outside_Item);
@@ -189,17 +188,5 @@ public class Game {
         } else {
             return true;  // signal that we want to quit
         }
-    }
-    
-    public String showCommands(Command commands){
-        return (commands.getCommandList());
-    }
-    
-    public String getCommandList(Command commands){
-        String returnString = "";
-        for(String command: commands){
-            returnString = returnString + command + " ";
-        }
-        return returnString;
     }
 }
