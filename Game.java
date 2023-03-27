@@ -15,16 +15,14 @@
  * @version 2016.02.29
  */
 
-public class Game 
-{
+public class Game {
     private Parser parser;
     private Room currentRoom;
-        
+
     /**
      * Create the game and initialise its internal map.
      */
-    public Game() 
-    {
+    public Game() {
         createRooms();
         parser = new Parser();
     }
@@ -32,16 +30,26 @@ public class Game
     /**
      * Create all the rooms and link their exits together.
      */
-    private void createRooms()
-    {
+    private void createRooms() {
         Room outside, theater, pub, lab, office;
-      
-        // create the rooms
-        outside = new Room("outside the main entrance of the university");
-        theater = new Room("in a lecture theater");
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        office = new Room("in the computing admin office");
+
+        // declare Item referance variables
+        Room.Item outside_Item, theater_Item, pub_Item, lab_Item, office_Item;
+        
+        // define each item object
+        outside_Item = new Room.Item("Bench: To sit, to relaz and wait for some one ", 0);
+        theater_Item = new Room.Item("Projector: To display presenations, videos, or lectures "
+        + 500);
+        pub_Item = new Room.Item("Beverages: Soft drinks to drink ", 100);
+        lab_Item = new Room.Item("Laptop: To access the files ", 800);
+        office_Item = new Room.Item("Key stand: Contains keys for other rooms ", 400);
+
+        // create the rooms by addint the corresponding Items to each room
+        outside = new Room("Outside the main entrance of the university" + outside_Item);
+        theater = new Room("In a lecture theater" + theater_Item);
+        pub = new Room("In the campus pub" + pub_Item);
+        lab = new Room("In a computing lab" + lab_Item);
+        office = new Room("In the computing admin office" + office_Item);
         
         // initialise room exits
         outside.setExit("east", theater);
@@ -63,8 +71,7 @@ public class Game
     /**
      *  Main play routine.  Loops until end of play.
      */
-    public void play() 
-    {            
+    public void play() {            
         printWelcome();
 
         // Enter the main command loop.  Here we repeatedly read commands and
@@ -81,8 +88,7 @@ public class Game
     /**
      * Print out the opening message for the player.
      */
-    private void printWelcome()
-    {
+    private void printWelcome() {
         System.out.println();
         System.out.println("Welcome to the World of Zuul!");
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
@@ -96,15 +102,14 @@ public class Game
      * @param command The command to be processed.
      * @return true If the command ends the game, false otherwise.
      */
-    private boolean processCommand(Command command) 
-    {
+    private boolean processCommand(Command command) {
         boolean wantToQuit = false;
 
         CommandWord commandWord = command.getCommandWord();
 
         switch (commandWord) {
-            case UNKNOWN:
-                System.out.println("I don't know what you mean...");
+            case LOOK:
+                look();
                 break;
 
             case HELP:
@@ -118,20 +123,30 @@ public class Game
             case QUIT:
                 wantToQuit = quit(command);
                 break;
+
+            case EAT:
+                eat();
+                break;
         }
         return wantToQuit;
     }
 
     // implementations of user commands:
+    private void eat(){
+        System.out.println("You finished eating and you aren't hungary any more.");
+    }
+
+    private void look(){
+        System.out.println(currentRoom.getLongDescription());
+    }
 
     /**
      * Print out some help information.
      * Here we print some stupid, cryptic message and a list of the 
      * command words.
      */
-    private void printHelp() 
-    {
-        System.out.println("You are lost. You are alone. You wander");
+    private void printHelp() {
+        System.out.println("You are lost. You are alone. You wander.");
         System.out.println("around at the university.");
         System.out.println();
         System.out.println("Your command words are:");
@@ -142,8 +157,7 @@ public class Game
      * Try to go in one direction. If there is an exit, enter the new
      * room, otherwise print an error message.
      */
-    private void goRoom(Command command) 
-    {
+    private void goRoom(Command command) {
         if(!command.hasSecondWord()) {
             // if there is no second word, we don't know where to go...
             System.out.println("Go where?");
@@ -157,8 +171,7 @@ public class Game
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
-        }
-        else {
+        } else {
             currentRoom = nextRoom;
             System.out.println(currentRoom.getLongDescription());
         }
@@ -169,14 +182,24 @@ public class Game
      * whether we really quit the game.
      * @return true, if this command quits the game, false otherwise.
      */
-    private boolean quit(Command command) 
-    {
+    private boolean quit(Command command) {
         if(command.hasSecondWord()) {
             System.out.println("Quit what?");
             return false;
-        }
-        else {
+        } else {
             return true;  // signal that we want to quit
         }
+    }
+    
+    public String showCommands(Command commands){
+        return (commands.getCommandList());
+    }
+    
+    public String getCommandList(Command commands){
+        String returnString = "";
+        for(String command: commands){
+            returnString = returnString + command + " ";
+        }
+        return returnString;
     }
 }

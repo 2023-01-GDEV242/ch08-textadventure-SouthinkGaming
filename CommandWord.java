@@ -5,11 +5,10 @@
  * @author  Michael Kölling and David J. Barnes
  * @version 2016.02.29
  */
-public enum CommandWord
-{
+public enum CommandWord {
     // A value for each command word along with its
     // corresponding user interface string.
-    GO("go"), QUIT("quit"), HELP("help"), UNKNOWN("?");
+    GO("go"), QUIT("quit"), HELP("help"), LOOK("look"), EAT("eat");
     
     // The command string.
     private String commandString;
@@ -18,16 +17,21 @@ public enum CommandWord
      * Initialise with the corresponding command string.
      * @param commandString The command string.
      */
-    CommandWord(String commandString)
-    {
+    CommandWord(String commandString) {
         this.commandString = commandString;
     }
     
     /**
      * @return The command word as a string.
      */
-    public String toString()
-    {
+    public String toString() {
         return commandString;
+    }
+    
+    /**
+     * Prints all valid commands to System.out
+     */
+    public void showAll(){
+        System.out.println(commandString + " ");
     }
 }

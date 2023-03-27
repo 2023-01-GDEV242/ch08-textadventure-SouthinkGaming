@@ -17,8 +17,7 @@
  * @version 2016.02.29
  */
 
-public class Command
-{
+public class Command {
     private CommandWord commandWord;
     private String secondWord;
 
@@ -29,8 +28,7 @@ public class Command
      *                  was not recognised.
      * @param secondWord The second word of the command. May be null.
      */
-    public Command(CommandWord commandWord, String secondWord)
-    {
+    public Command(CommandWord commandWord, String secondWord) {
         this.commandWord = commandWord;
         this.secondWord = secondWord;
     }
@@ -39,8 +37,7 @@ public class Command
      * Return the command word (the first word) of this command.
      * @return The command word.
      */
-    public CommandWord getCommandWord()
-    {
+    public CommandWord getCommandWord() {
         return commandWord;
     }
 
@@ -48,24 +45,21 @@ public class Command
      * @return The second word of this command. Returns null if there was no
      * second word.
      */
-    public String getSecondWord()
-    {
+    public String getSecondWord() {
         return secondWord;
     }
 
     /**
-     * @return true if this command was not understood.
+     * @return true if this command is look.
      */
-    public boolean isUnknown()
-    {
-        return (commandWord == CommandWord.UNKNOWN);
+    public boolean LOOK() {
+        return (commandWord == CommandWord.LOOK);
     }
 
     /**
      * @return true if the command has a second word.
      */
-    public boolean hasSecondWord()
-    {
+    public boolean hasSecondWord() {
         return (secondWord != null);
     }
 }
