@@ -18,6 +18,9 @@
 public class Game {
     private Parser parser;
     private Room currentRoom;
+    private Room prevRoom;
+    private Room roomStack[];
+    private int top;
 
     /**
      * Create the game and initialise its internal map.
@@ -25,46 +28,102 @@ public class Game {
     public Game() {
         createRooms();
         parser = new Parser();
+        roomStack = new Room[500];
+        top = -1;
     }
 
     /**
      * Create all the rooms and link their exits together.
      */
     private void createRooms() {
-        Room outside, theater, pub, lab, office;
+        Room outside, theater, pub, lab, office, welcome_center, event_center, warehouse,
+        gate, dorm, gym, pool, garden, food_court, stadium;
 
         // declare Item referance variables
-        Item outside_Item, theater_Item, pub_Item, lab_Item, office_Item;
+        Item bed, drinksAndFood, laptop, keys;
         
         // define each item object
-        outside_Item = new Item("Bench: To sit, to relaz and wait for some one ", 0);
-        theater_Item = new Item("Projector: To display presenations, videos, or lectures ", 500);
-        pub_Item = new Item("Beverages: Soft drinks to drink ", 100);
-        lab_Item = new Item("Laptop: To access the files ", 800);
-        office_Item = new Item("Key stand: Contains keys for other rooms ", 400);
+        bed = new Item("Relaz and sleep for a little bit ", 100);
+        drinksAndFood = new Item("Soft drinks, wings, and burgers to eat and drink.", 100);
+        laptop = new Item("Laptop you access to make a fake id so can get into the office.", 800);
+        keys = new Item("Key stand: Contains keys for other rooms ", 400);
 
         // create the rooms by addint the corresponding Items to each room
-        outside = new Room("Outside the main entrance of the university" + outside_Item);
-        theater = new Room("In a lecture theater" + theater_Item);
-        pub = new Room("In the campus pub" + pub_Item);
-        lab = new Room("In a computing lab" + lab_Item);
-        office = new Room("In the computing admin office" + office_Item);
+        outside = new Room("Outside the main entrance of the university, you see a butiful campus green.");
+        theater = new Room("In a lecture theater, there are several classrooms that students can go into.");
+        pub = new Room("In the campus pub, there are " + drinksAndFood);
+        lab = new Room("In a computing lab, there is a " + laptop);
+        office = new Room("In the computing admin office" + keys);
+        welcome_center = new Room("Helps transfer/new students with adjusting to the " +
+        "campus.");
+        event_center = new Room ("Plans events for faculty, staff, and students.");
+        warehouse = new Room ("Used as storage for the campus.");
+        gate = new Room ("Allows visitors in when the campus is open.");
+        dorm = new Room ("Housing for students who can't commute to campus.");
+        gym = new Room ("Allows students to exsersice on campus and not pay for a gym " +
+        "membership.");
+        pool = new Room ("Allows students to swim or other pool related activities.");
+        garden = new Room ("Used to grow fresh vegitables for students to eat during a "
+        + "meal.");
+        food_court = new Room ("Serves food of people.");
+        stadium = new Room ("Used for competative and casual sports like football"
+        + "or soccer");
         
         // initialise room exits
-        outside.setExit("east", theater);
-        outside.setExit("south", lab);
+        outside.setExit("north", gate);
+        outside.setExit("south", welcome_center);
+        outside.setExit("east", dorm);
         outside.setExit("west", pub);
+        
+        gate.setExit("south", outside);
+        
+        dorm.setExit("north", gym);
+        dorm.setExit("south", warehouse);
+        dorm.setExit("east", food_court);
+        dorm.setExit("west", outside);
+        
+        food_court.setExit("south", garden);
+        food_court.setExit("west", dorm);
+        
+        warehouse.setExit("north", dorm);
+        warehouse.setExit("south", event_center);
+        warehouse.setExit("east", garden);
+        warehouse.setExit("west", welcome_center);
+        
+        gym.setExit("south", dorm);
+        gym.setExit("east", pool);
+        
+        pool.setExit("west", gym);
+        
+        welcome_center.setExit("north", outside);
+        welcome_center.setExit("south", office);
+        welcome_center.setExit("east", warehouse);
+        welcome_center.setExit("west", stadium);
+        
+        office.setExit("north", welcome_center);
+        office.setExit("east", event_center);
+        
+        event_center.setExit("north", warehouse);
+        event_center.setExit("west", office);
 
-        theater.setExit("west", outside);
-
+        garden.setExit("north", food_court);
+        garden.setExit("west", warehouse);
+        
+        pub.setExit("north", lab);
+        pub.setExit("south", stadium);
         pub.setExit("east", outside);
+        pub.setExit("west", theater);
+        
+        theater.setExit("east", pub);
 
-        lab.setExit("north", outside);
-        lab.setExit("east", office);
-
-        office.setExit("west", lab);
+        stadium.setExit("north", pub);
+        stadium.setExit("east", welcome_center);
+        
+        lab.setExit("south", pub);
 
         currentRoom = outside;  // start game outside
+        
+        prevRoom = null;
     }
 
     /**
@@ -126,6 +185,10 @@ public class Game {
             case EAT:
                 eat();
                 break;
+
+            case BACK:
+                back();
+                break;
         }
         return wantToQuit;
     }
@@ -171,8 +234,33 @@ public class Game {
         if (nextRoom == null) {
             System.out.println("There is no door!");
         } else {
+            push(currentRoom);
             currentRoom = nextRoom;
             System.out.println(currentRoom.getLongDescription());
+        }
+    }
+    
+    private void back() {
+        currentRoom = pop();
+        if(currentRoom != null) {
+            System.out.println(currentRoom.getLongDescription());
+        }
+    }
+    
+    private void push(Room room) {
+        if (top == roomStack.length-1){
+            System.out.println("Room stack is full");
+        } else {
+            roomStack[++top] = room;
+        }
+    }
+    
+    private Room pop() {
+        if (top < 0) {
+            System.out.println("Sorry, you are outside on the campus green and there is no previous room to go to.");
+            return null;
+        } else {
+            return roomStack[top--];
         }
     }
 
